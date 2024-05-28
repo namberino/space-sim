@@ -43,6 +43,8 @@ class Spacecraft:
         accel_x = math.cos(theta_angle) * accel
         accel_y = math.sin(theta_angle) * accel
 
+        print(accel_x, accel_y)
+
         self.xvel += accel_x
         self.yvel += accel_y
 
