@@ -14,7 +14,7 @@ SPACECRAFT_MASS = 5
 PLANET_SIZE = 50 # radius
 SPACECRAFT_SIZE = 5 # radius
 VELOCITY_SCALE = 100
-G = 5
+G = 24.79
 
 pygame.init()
 
