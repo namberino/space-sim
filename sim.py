@@ -35,6 +35,22 @@ class Spacecraft:
     def draw(self):
         pygame.draw.circle(window, RED, (int(self.x), int(self.y)), SPACECRAFT_SIZE)
 
+    def move(self):
+        self.x += self.xvel
+        self.y += self.yvel
+
+def create_spacecraft(location, mouse_pos):
+    tmp_x, tmp_y = location
+    mouse_x, mouse_y = mouse_pos
+
+    # simple square triangle calculation (with velocity scaling)
+    xvel = (mouse_x - tmp_x) / VELOCITY_SCALE
+    yvel = (mouse_y - tmp_y) / VELOCITY_SCALE
+
+    craft = Spacecraft(tmp_x, tmp_y, xvel, yvel, SPACECRAFT_MASS)
+
+    return craft
+
 def main():
     clk = pygame.time.Clock()
     run = True
@@ -52,8 +68,7 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tmp_spacecraft_pos: # a spacecraft has already been placed
-                    tmp_x, tmp_y = tmp_spacecraft_pos
-                    craft = Spacecraft(tmp_x, tmp_y, 0, 0, SPACECRAFT_MASS)
+                    craft = create_spacecraft(tmp_spacecraft_pos, mouse_pos)
                     spacecrafts.append(craft)
                     tmp_spacecraft_pos = None
                 else:
@@ -67,6 +82,7 @@ def main():
 
         for craft in spacecrafts:
             craft.draw()
+            craft.move()
 
         pygame.display.update()
 
