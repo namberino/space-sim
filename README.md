@@ -1,3 +1,3 @@
-# Planet slingshot simulation
+# Space simulations
 
-Simple simulation of the slingshot maneuver with Jupiter
+Some fun space simulations using python
