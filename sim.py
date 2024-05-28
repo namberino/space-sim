@@ -84,6 +84,10 @@ def main():
             craft.draw()
             craft.move()
 
+            # remove offscreen spacecrafts
+            if craft.x < 0 or craft.x > WIN_WIDTH or craft.y < 0 or craft.y > WIN_HEIGHT:
+                spacecrafts.remove(craft)
+
         pygame.display.update()
 
         clk.tick(FPS)
