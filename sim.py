@@ -35,7 +35,17 @@ class Spacecraft:
     def draw(self):
         pygame.draw.circle(window, RED, (int(self.x), int(self.y)), SPACECRAFT_SIZE)
 
-    def move(self):
+    def move(self, planet=None):
+        distance = math.sqrt((self.x - planet.x) ** 2 + (self.y - planet.y) ** 2)
+        force = (G * self.mass * planet.mass) / distance ** 2
+        accel = force / self.mass
+        theta_angle = math.atan2(planet.y - self.y, planet.x - self.x)
+        accel_x = math.cos(theta_angle) * accel
+        accel_y = math.sin(theta_angle) * accel
+
+        self.xvel += accel_x
+        self.yvel += accel_y
+
         self.x += self.xvel
         self.y += self.yvel
 
@@ -92,7 +102,7 @@ def main():
 
         for craft in spacecrafts.copy():
             craft.draw()
-            craft.move()
+            craft.move(planet)
 
             collided = math.sqrt((craft.x - planet.x) ** 2 + (craft.y - planet.y) ** 2) <= PLANET_SIZE # difference between 2 points
 
