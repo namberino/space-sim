@@ -39,6 +39,15 @@ class Spacecraft:
         self.x += self.xvel
         self.y += self.yvel
 
+class Planet:
+    def __init__(self, x, y, mass):
+        self.x = x
+        self.y = y
+        self.mass = mass
+
+    def draw(self):
+        window.blit(planet_img, (self.x - PLANET_SIZE, self.y - PLANET_SIZE))
+
 def create_spacecraft(location, mouse_pos):
     tmp_x, tmp_y = location
     mouse_x, mouse_y = mouse_pos
@@ -55,6 +64,7 @@ def main():
     clk = pygame.time.Clock()
     run = True
 
+    planet = Planet(WIN_WIDTH // 2, WIN_HEIGHT // 2, PLANET_MASS)
     spacecrafts = []
     tmp_spacecraft_pos = None # stores position of object that has not been launched
 
@@ -80,13 +90,17 @@ def main():
             pygame.draw.line(window, WHITE, tmp_spacecraft_pos, mouse_pos, 2) # draw line from object to mouse
             pygame.draw.circle(window, RED, tmp_spacecraft_pos, SPACECRAFT_SIZE)
 
-        for craft in spacecrafts:
+        for craft in spacecrafts.copy():
             craft.draw()
             craft.move()
 
+            collided = math.sqrt((craft.x - planet.x) ** 2 + (craft.y - planet.y) ** 2) <= PLANET_SIZE # difference between 2 points
+
             # remove offscreen spacecrafts
-            if craft.x < 0 or craft.x > WIN_WIDTH or craft.y < 0 or craft.y > WIN_HEIGHT:
+            if craft.x < 0 or craft.x > WIN_WIDTH or craft.y < 0 or craft.y > WIN_HEIGHT or collided:
                 spacecrafts.remove(craft)
+
+        planet.draw()
 
         pygame.display.update()
 
