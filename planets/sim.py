@@ -38,6 +38,44 @@ class Planet:
 
         pygame.draw.circle(window, self.color, (scaled_x, scaled_y), self.radius)
 
+    def attraction(self, other):
+        other_x, other_y = other.x, other.y
+
+        distance_x = other_x - self.x
+        distance_y = other_y - self.y
+        distance = math.sqrt(distance_x**2 + distance_y**2)
+
+        if other.sun:
+            self.distance_to_sun = distance
+
+        force = (G * self.mass * other.mass) / distance**2
+        theta_angle = math.atan2(distance_y, distance_x)
+        force_x = math.cos(theta_angle) * force
+        force_y = math.sin(theta_angle) * force
+
+        return force_x, force_y
+
+    def update_pos(self, planets):
+        total_force_x = 0
+        total_force_y = 0
+
+        for planet in planets:
+            if self == planet:
+                continue
+
+            # calculate force on current planet by every other planets
+            force_x, force_y = self.attraction(planet)
+            total_force_x += force_x
+            total_force_y += force_y
+
+        self.xvel += total_force_x / self.mass * TIMESTEP
+        self.yvel += total_force_y / self.mass * TIMESTEP
+
+        self.x += self.xvel * TIMESTEP
+        self.y += self.yvel * TIMESTEP
+
+        # if len(self.orbit_points > 10):
+        self.orbit_points.append((self.x, self.y))
 
 def main():
     run = True
@@ -61,12 +99,15 @@ def main():
     planets = [sun, mercury, venus, earth, mars]
 
     while (run):
+        window.fill((0, 0, 0))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 break
 
         for planet in planets:
+            planet.update_pos(planets)
             planet.draw()
 
         pygame.display.update()

@@ -20,15 +20,15 @@ $$
 Acceleration angle:
 
 $$
-\theta = \tan^{-1}(\frac{a_y}{a_x})
+\theta = \tan^{-1}(\frac{D_y}{D_x})
 $$
 
 X and Y acceleration:
 
 $$
-\sin(\theta) \cdot a = a_y
+a_y = \sin(\theta) \cdot a
 $$
 
 $$
-\cos(\theta) \cdot a = a_x
+a_x = \cos(\theta) \cdot a
 $$
