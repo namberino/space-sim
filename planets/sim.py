@@ -20,12 +20,13 @@ pygame.display.set_caption("Planets Simulation")
 distance_font = pygame.font.SysFont("Arial", 15)
 
 class Planet:
-    def __init__(self, x, y, radius, mass, color):
+    def __init__(self, x, y, radius, mass, color, name):
         self.x = x
         self.y = y
         self.radius = radius
         self.mass = mass
         self.color = color
+        self.name = name
         self.xvel = 0
         self.yvel = 0
         self.sun = False
@@ -48,8 +49,10 @@ class Planet:
         pygame.draw.circle(window, self.color, (scaled_x, scaled_y), self.radius)
 
         if not self.sun:
+            color_text = distance_font.render(f"{self.name}", 1, WHITE)
+            window.blit(color_text, (scaled_x - color_text.get_width() / 2, scaled_y - color_text.get_height()))
             distance_text = distance_font.render(f"{round(self.distance_to_sun / 1000, 2)}km", 1, WHITE)
-            window.blit(distance_text, (scaled_x - distance_text.get_width() / 2, scaled_y - distance_text.get_height() / 2))
+            window.blit(distance_text, (scaled_x - distance_text.get_width() / 2, scaled_y - distance_text.get_height() / 5))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -95,19 +98,19 @@ def main():
     run = True
     clk = pygame.time.Clock()
 
-    sun = Planet(0, 0, 30, 1.98892 * 10**30, YELLOW)
+    sun = Planet(0, 0, 30, 1.98892 * 10**30, YELLOW, "Sun")
     sun.sun = True
 
-    mercury = Planet(0.387 * ASTRONOMICAL_UNIT, 0, 8, 3.30 * 10**23, DARK_GREY)
+    mercury = Planet(0.387 * ASTRONOMICAL_UNIT, 0, 8, 3.30 * 10**23, DARK_GREY, "Mercury")
     mercury.yvel = -47.4 * 1000
 
-    venus = Planet(0.723 * ASTRONOMICAL_UNIT, 0, 14, 4.8685 * 10**24, WHITE)
+    venus = Planet(0.723 * ASTRONOMICAL_UNIT, 0, 14, 4.8685 * 10**24, WHITE, "Venus")
     venus.yvel = -35.02 * 1000
 
-    earth = Planet(-1 * ASTRONOMICAL_UNIT, 0, 16, 5.9742 * 10**24, BLUE)
+    earth = Planet(-1 * ASTRONOMICAL_UNIT, 0, 16, 5.9742 * 10**24, BLUE, "Earth")
     earth.yvel = 29.783 * 1000
 
-    mars = Planet(-1.524 * ASTRONOMICAL_UNIT, 0, 12, 6.39 * 10**23, RED)
+    mars = Planet(-1.524 * ASTRONOMICAL_UNIT, 0, 12, 6.39 * 10**23, RED, "Mars")
     mars.yvel = 24.077 * 1000
 
     planets = [sun, mercury, venus, earth, mars]
