@@ -36,6 +36,15 @@ class Planet:
         scaled_x = self.x * SCALE + WIN_WIDTH / 2
         scaled_y = self.y * SCALE + WIN_HEIGHT / 2
 
+        if len(self.orbit_points) > 2:
+            updated_points = []
+            for point in self.orbit_points:
+                orbit_x, orbit_y = point
+                orbit_x = orbit_x * SCALE + WIN_WIDTH / 2
+                orbit_y = orbit_y * SCALE + WIN_HEIGHT / 2
+                updated_points.append((orbit_x, orbit_y))
+            pygame.draw.lines(window, self.color, False, updated_points, 2)
+
         pygame.draw.circle(window, self.color, (scaled_x, scaled_y), self.radius)
 
     def attraction(self, other):
@@ -74,8 +83,9 @@ class Planet:
         self.x += self.xvel * TIMESTEP
         self.y += self.yvel * TIMESTEP
 
-        # if len(self.orbit_points > 10):
         self.orbit_points.append((self.x, self.y))
+        if len(self.orbit_points) > 680:
+            self.orbit_points.pop(0)
 
 def main():
     run = True
