@@ -17,7 +17,7 @@ pygame.init()
 WIN_WIDTH, WIN_HEIGHT = 800, 800
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Planets Simulation")
-sim_font = pygame.font.SysFont("Arial", 16)
+distance_font = pygame.font.SysFont("Arial", 15)
 
 class Planet:
     def __init__(self, x, y, radius, mass, color):
@@ -46,6 +46,10 @@ class Planet:
             pygame.draw.lines(window, self.color, False, updated_points, 2)
 
         pygame.draw.circle(window, self.color, (scaled_x, scaled_y), self.radius)
+
+        if not self.sun:
+            distance_text = distance_font.render(f"{round(self.distance_to_sun / 1000, 2)}km", 1, WHITE)
+            window.blit(distance_text, (scaled_x - distance_text.get_width() / 2, scaled_y - distance_text.get_height() / 2))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
